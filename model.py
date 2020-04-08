@@ -37,19 +37,12 @@ class DCGenerator(nn.Module):
         )
 
     def forward(self,x):
-        print(x.size())
         h = self.layer1(x)
-        print(h.size())
         h = self.layer2(h)
-        print(h.size())
         h = self.layer3(h)
-        print(h.size())
         h = self.layer4(h)
-        print(h.size())
         h = self.layer5(h)
-        print(h.size())
         out = self.last(h)
-        print(out.size())
 
         return out
 
@@ -80,19 +73,12 @@ class DCDiscriminator(nn.Module):
         self.last = nn.Conv2d(image_size*16,1,kernel_size=4,stride=1)
 
     def forward(self,x):
-        print(x.size())
         h = self.layer1(x)
-        print(h.size())
         h = self.layer2(h)
-        print(h.size())
         h = self.layer3(h)
-        print(h.size())
         h = self.layer4(h)
-        print(h.size())
         h = self.layer5(h)
-        print(h.size())
         out = self.last(h)
-        print(out.size())
 
         return out
 
