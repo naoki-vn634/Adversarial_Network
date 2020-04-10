@@ -13,7 +13,7 @@ def weight_init(m):
         nn.init.constant_(m.bias.data, 0)
     elif classname.find('BatchNorm') != -1:
         nn.init.normal_(m.weight.data, 1.0, 0.02)
-        nn.init.constant(m.bias, 0)
+        nn.init.constant(m.bias.data, 0)
 
 def train(G, D, dataloader, output, num_epochs,interval):
     device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
@@ -144,15 +144,22 @@ def main():
     args = parser.parse_args()
 
     # Define Dataset
-    img_list = mnist_path_list()
-    mean = (0.5,)
-    std = (0.5,)
-    train_dataset = MNIST_IMG_Dataset(img_list,transform=ImageTransfrom(mean,std))
+    mean = (0.485,0.456,0.406)
+    std = (0.229, 0.224, 0.225)
+    train_dataset = CIFAR(transform=ImageTransfrom(mean,std))
     train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
 
+
+
+    # img_list = mnist_path_list()
+    # mean = (0.5,)
+    # std = (0.5,)
+    # train_dataset = MNIST_IMG_Dataset(img_list,transform=ImageTransfrom(mean,std))
+    # train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
+
     # Define model
-    G = DCGenerator()
-    D = DCDiscriminator()
+    G = DCGenerator(num_chnannel=3, image_size=32)
+    D = DCDiscriminator(num_channel=3, image_size=32)
     G.apply(weight_init)
     D.apply(weight_init)
     print('weight and bias was initialized.')
