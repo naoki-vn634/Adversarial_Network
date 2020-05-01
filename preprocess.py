@@ -6,7 +6,7 @@ import torchvision.transforms as transforms
 import numpy as np
 import pickle
 
-def mnist_path_list(root_path='../data/img_78'):
+def mnist_path_list(root_path='/mnt/aoni02/matsunaga/MNIST/img_78'):
 
     img_list_7 = [path for i, path in enumerate(glob(os.path.join(root_path,'img_7_*.jpg'))) if i < 200]
     img_list_8 = [path for i, path in enumerate(glob(os.path.join(root_path,'img_8_*.jpg'))) if i < 200]

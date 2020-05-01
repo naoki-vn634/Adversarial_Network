@@ -17,14 +17,14 @@ class DCGenerator(nn.Module):
             nn.ReLU(inplace=True))
 
         self.layer3 = nn.Sequential(
-            nn.ConvTranspose2d(image_size*4,image_size,kernel_size=4,stride=2,padding=1),
-            nn.BatchNorm2d(image_size),
+            nn.ConvTranspose2d(image_size*4,image_size*2,kernel_size=4,stride=2,padding=1),
+            nn.BatchNorm2d(image_size*2),
             nn.ReLU(inplace=True))
 
-        # self.layer4 = nn.Sequential(
-        #     nn.ConvTranspose2d(image_size*4,image_size*2,kernel_size=4,stride=2,padding=1),
-        #     nn.BatchNorm2d(image_size*2),
-        #     nn.ReLU(inplace=True))
+        self.layer4 = nn.Sequential(
+            nn.ConvTranspose2d(image_size*2,image_size,kernel_size=4,stride=2,padding=1),
+            nn.BatchNorm2d(image_size),
+            nn.ReLU(inplace=True))
 
         # self.layer5 = nn.Sequential(
         #     nn.ConvTranspose2d(image_size*2,image_size,kernel_size=4,stride=2,padding=1),
@@ -40,9 +40,10 @@ class DCGenerator(nn.Module):
         h = self.layer1(x)
         h = self.layer2(h)
         h = self.layer3(h)
-        # h = self.layer4(h)
+        h = self.layer4(h)
         # h = self.layer5(h)
         out = self.last(h)
+        print(out.size())
 
         return out
 
@@ -55,16 +56,16 @@ class DCDiscriminator(nn.Module):
             nn.LeakyReLU(0.1, inplace=True))
 
         self.layer2 = nn.Sequential(
-            nn.Conv2d(image_size,image_size*4,kernel_size=4,stride=2,padding=1),
+            nn.Conv2d(image_size,image_size*2,kernel_size=4,stride=2,padding=1),
             nn.LeakyReLU(0.1, inplace=True))
 
         self.layer3 = nn.Sequential(
-            nn.Conv2d(image_size*4,image_size*8,kernel_size=4,stride=2,padding=1),
+            nn.Conv2d(image_size*2,image_size*4,kernel_size=4,stride=2,padding=1),
             nn.LeakyReLU(0.1, inplace=True))
 
-        # self.layer4 = nn.Sequential(
-        #     nn.Conv2d(image_size*4,image_size*8,kernel_size=4,stride=2,padding=1),
-        #     nn.LeakyReLU(0.1, inplace=True))
+        self.layer4 = nn.Sequential(
+            nn.Conv2d(image_size*4,image_size*8,kernel_size=4,stride=2,padding=1),
+            nn.LeakyReLU(0.1, inplace=True))
 
         # self.layer5 = nn.Sequential(
         #     nn.Conv2d(image_size*8,image_size*16,kernel_size=4,stride=2,padding=1),
@@ -76,7 +77,7 @@ class DCDiscriminator(nn.Module):
         h = self.layer1(x)
         h = self.layer2(h)
         h = self.layer3(h)
-        # h = self.layer4(h)
+        h = self.layer4(h)
         # h = self.layer5(h)
         out = self.last(h)
 

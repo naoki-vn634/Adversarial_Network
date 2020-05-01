@@ -69,6 +69,7 @@ def train(G, D, dataloader, output, num_epochs,interval):
 
             # 正解ラベルと偽ラベルを作成
             # epochの最後のイテレーションはミニバッチの数が少なくなる
+            print(imges.size())
             mini_batch_size = imges.size()[0]
             label_real = torch.full((mini_batch_size,), 1).to(device)
             label_fake = torch.full((mini_batch_size,), 0).to(device)
@@ -140,26 +141,26 @@ def main():
     parser.add_argument('--batch_size',type=int,default=64)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--ckpt_interval',type=int, default=50)
-    parser.add_argument('--out_dir', type=str, default='')
+    parser.add_argument('--out_dir', type=str, default='/home/matsunaga/data/GAN')
     args = parser.parse_args()
 
     # Define Dataset
     mean = (0.485,0.456,0.406)
     std = (0.229, 0.224, 0.225)
-    train_dataset = CIFAR(transform=ImageTransfrom(mean,std))
-    train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
-
-
-
-    # img_list = mnist_path_list()
-    # mean = (0.5,)
-    # std = (0.5,)
-    # train_dataset = MNIST_IMG_Dataset(img_list,transform=ImageTransfrom(mean,std))
+    # train_dataset = CIFAR(transform=ImageTransfrom(mean,std))
     # train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
 
+
+
+    img_list = mnist_path_list()
+    mean = (0.5,)
+    std = (0.5,)
+    train_dataset = MNIST_IMG_Dataset(img_list,transform=ImageTransfrom(mean,std))
+    train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
+
     # Define model
-    G = DCGenerator(num_chnannel=3, image_size=32)
-    D = DCDiscriminator(num_channel=3, image_size=32)
+    G = DCGenerator(num_chnannel=1, image_size=64)
+    D = DCDiscriminator(num_channel=1, image_size=64)
     G.apply(weight_init)
     D.apply(weight_init)
     print('weight and bias was initialized.')
