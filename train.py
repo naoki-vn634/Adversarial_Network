@@ -68,8 +68,7 @@ def train(G, D, dataloader, output, num_epochs,interval):
                 continue
 
             # 正解ラベルと偽ラベルを作成
-            # epochの最後のイテレーションはミニバッチの数が少なくなる
-            print(imges.size())
+ 
             mini_batch_size = imges.size()[0]
             label_real = torch.full((mini_batch_size,), 1).to(device)
             label_fake = torch.full((mini_batch_size,), 0).to(device)
@@ -128,7 +127,7 @@ def train(G, D, dataloader, output, num_epochs,interval):
         print('timer:  {:.4f} sec.'.format(t_epoch_finish - t_epoch_start))
         t_epoch_start = time.time()
         
-        if epoch % interval == 0:
+        if (epoch+1) % interval == 0:
             if not os.path.isdir(output):
                 os.makedirs(output)
             torch.save(G.state_dict(),os.path.join(output,'epoch_{}_weight.pth'.format(epoch)))

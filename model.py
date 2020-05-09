@@ -2,7 +2,7 @@ import torch.nn as nn
 
 
 class DCGenerator(nn.Module):
-    def __init__(self,num_chnannel=1,input_dim=20,image_size=64):
+    def __init__(self,num_channel=1,input_dim=20,image_size=64):
         #inputは乱数その次元がinput_dim(例:torch.randn(1,20,1,1))
         super(DCGenerator,self).__init__()
 
@@ -32,7 +32,7 @@ class DCGenerator(nn.Module):
             # nn.ReLU(inplace=True))
         
         self.last = nn.Sequential(
-            nn.ConvTranspose2d(image_size,num_chnannel,kernel_size=4,stride=2,padding=1),
+            nn.ConvTranspose2d(image_size,num_channel,kernel_size=4,stride=2,padding=1),
             nn.Tanh()
         )
 
@@ -43,7 +43,6 @@ class DCGenerator(nn.Module):
         h = self.layer4(h)
         # h = self.layer5(h)
         out = self.last(h)
-        print(out.size())
 
         return out
 
