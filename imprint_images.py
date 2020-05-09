@@ -14,37 +14,27 @@ def imprint(image,file,out):
     count = 0
     for i,img in enumerate(image):
         img_np=img.cpu().data.numpy()
+        img_np = img_np.transpose(2,1,0)
         if i % 4 ==0:
             img1 = img_np
-        elif i % (4-1)==0:
-            img1 = np.hstack(img1,img_np)
+        elif i % 4==3:
+            img1 = np.hstack((img1,img_np))
             if count==0:
                 img2 = img1
                 count += 1
             else:
-                img2 = np.vstack(img2,img1)
+                img2 = np.vstack((img2,img1))
         else:
-            img1 = np.hstack(img1,img_np)
+            img1 = np.hstack((img1,img_np))
             
-            
-        print(img1.shape)
-        print(img2.shape)
+        # img_np = img_np.transpose(2,1,0)
+
+    print(file)
+    filename = file + '.png'
+    print(filename)
+    cv2.imwrite(os.path.join(out,filename),img_np)
 
                 
-
-                
-        
-        img_np = img.cpu().data.numpy()
-        if (i+1)%4 ==0:
-            img1 = img_np
-        else:
-            img1 = np.hstack(img1,img_np)
-
-
-
-        for i in range(4):
-            for j in range(4):
-                if j==0:im1 = img_np
 
 
 
@@ -53,7 +43,7 @@ def eval(net,device,weight_path,out):
     
     net.eval()
     for weight in weight_path:
-        file_name = os.path.splitext(os.path.basename(weight))
+        file_name = os.path.splitext(os.path.basename(weight))[0]
         net.load_state_dict(torch.load(weight))
         net.to(device)
 
