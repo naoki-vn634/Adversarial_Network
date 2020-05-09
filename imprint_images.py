@@ -6,6 +6,7 @@ import argparse
 
 import numpy as np
 
+from  PIL import Image
 from glob import glob
 from model import *
 
@@ -13,8 +14,18 @@ from model import *
 def imprint(image,file,out):
     count = 0
     for i,img in enumerate(image):
-        img_np=img.cpu().data.numpy()
+        #  Image.fromarray(np.uint8(np.asarray(image)))
+        # scale = 255.0 / np.max(arrayimage)
+
+        # pilImg = Image.fromarray(np.uint8(arrayimage*scale))
+        img_np=img.cpu().detach().numpy()
         img_np = img_np.transpose(2,1,0)
+        scale = 255.0/np.max(img_np)
+        img_np = img_np * scale
+
+
+        cv2.imwrite("result.png",img_np)
+        
         if i % 4 ==0:
             img1 = img_np
         elif i % 4==3:
@@ -27,12 +38,9 @@ def imprint(image,file,out):
         else:
             img1 = np.hstack((img1,img_np))
             
-        # img_np = img_np.transpose(2,1,0)
-
-    print(file)
     filename = file + '.png'
-    print(filename)
-    cv2.imwrite(os.path.join(out,filename),img_np)
+    
+    cv2.imwrite(os.path.join(out,filename),img2)
 
                 
 
