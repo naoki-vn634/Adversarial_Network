@@ -138,7 +138,7 @@ def train(G, D, dataloader, output, num_epochs,interval):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch_size',type=int,default=64)
-    parser.add_argument('--epochs', type=int, default=200)
+    parser.add_argument('--epochs', type=int, default=1000)
     parser.add_argument('--ckpt_interval',type=int, default=50)
     parser.add_argument('--out_dir', type=str, default='/home/matsunaga/data/GAN')
     args = parser.parse_args()
@@ -158,7 +158,7 @@ def main():
     train_dataloader = torch.utils.data.DataLoader(train_dataset,batch_size=args.batch_size,shuffle=True)
 
     # Define model
-    G = DCGenerator(num_chnannel=1, image_size=64)
+    G = DCGenerator(num_channel=1, image_size=64)
     D = DCDiscriminator(num_channel=1, image_size=64)
     G.apply(weight_init)
     D.apply(weight_init)

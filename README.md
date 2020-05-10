@@ -7,7 +7,7 @@ number:238 respectively
 
 ### result
 #### epoch 50  
-
+![](https://github.com/naoki-vn634/Adversarial_Network/result/epoch_49_weight.png)
 
 
 #### epoch 100  
